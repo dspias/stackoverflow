@@ -41,12 +41,12 @@
             <form class="form-signin" action="" method="POST">
             <?php include('templates/partials/errors.php'); ?>
               <div class="form-label-group">
-                <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
+                <input type="email" id="inputEmail" class="form-control" name="email" placeholder="Email address" required autofocus>
                 <label for="inputEmail">Email address</label>
               </div>
 
               <div class="form-label-group">
-                <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+                <input type="password" id="inputPassword" name="password" class="form-control" placeholder="Password" required>
                 <label for="inputPassword">Password</label>
               </div>
 

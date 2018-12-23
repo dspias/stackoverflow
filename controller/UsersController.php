@@ -40,6 +40,7 @@ class UsersController {
         $password = mysqli_real_escape_string( $this->db->link, $password );
         $confirm_password = mysqli_real_escape_string( $this->db->link, $confirm_password );
 
+
         // form validation: ensure that the form is correctly filled ...
         // by adding (array_push()) corresponding error unto $errors array
         if (empty($username)) { array_push($this->errors, "username is required"); }
@@ -53,33 +54,39 @@ class UsersController {
         // first check the database to make sure 
         // a user does not already exist with the same username and/or email
         $user_check_query = "SELECT * FROM users WHERE username='$username' OR email='$email' LIMIT 1";
-        $result = $this->db->select($user_check_query);        
-        $user = mysql_fetch_assoc($result);
+        $result = $this->db->select($user_check_query);
+
+        $user = $result->fetch_assoc();
+
         
         if ($user) { // if user exists
             if ($user['username'] === $username) {
-            array_push($errors, "username already exists");
+            array_push($this->errors, "username already exists");
             }
 
             if ($user['email'] === $email) {
-            array_push($errors, "email already exists");
+            array_push($this->errors, "email already exists");
             }
         }
 
 
-        // // Finally, register user if there are no errors in the form
-        // if (count($errors) == 0) {
-        //     $password = md5($password);//encrypt the password before saving in the database
+        // Finally, register user if there are no errors in the form
+        if (count($this->errors) == 0) {
+            $password = md5($password);//encrypt the password before saving in the database
 
-        //     $query = "INSERT INTO users (username, email, password) 
-        //             VALUES('$username', '$email', '$password')";
-        //     mysqli_query($db, $query);
-        //     $_SESSION['username'] = $username;
-        //     $_SESSION['success'] = "You are now logged in";
-        //     header('location: index.php');
-        // } else{
-        //     return $this->errors;
-        // }
+            $query = "INSERT INTO users (username, email, password) 
+                    VALUES('$username', '$email', '$password')";
+            $result = $this->db->insert($query);
+            if(!isset($result)){
+                $_SESSION['username'] = $username;
+                $_SESSION['success'] = "You are now logged in";
+                
+                header('location: index.php');
+            }
+            
+        } else{
+            return $this->errors;
+        }
 
 
     }
@@ -87,33 +94,40 @@ class UsersController {
 
 
 	public function userLogin($request) {
-		$adminUser = $this->fm->validation($adminUser);
-		$adminPass = $this->fm->validation($adminPass);
+		$email = $this->fm->validation($request['email']);
+		$password = $this->fm->validation($request['password']);
 
-		$adminUser = mysqli_real_escape_string($this->db->link, $adminUser);
-		$adminPass = mysqli_real_escape_string($this->db->link, $adminPass);
+		$email = mysqli_real_escape_string($this->db->link, $email);
+        $password = mysqli_real_escape_string($this->db->link, $password);
+        
 
-		if(empty($adminUser) || empty($adminPass)){
+        if (empty($email)) {
+            array_push($this->errors, "email is required");
+        }
+        if (empty($password)) {
+            array_push($this->errors, "Password is required");
+        }
+
+		if(count($this->errors) != 0){
 			
-			$loginMsg = "";
-			return $loginMsg;
+			return $this->errors;
 			
 		} else {
-			$query = "SELECT * FROM tbl_admin WHERE adminUser = '$adminUser' AND adminPass = '$adminPass'";
+			$query = "SELECT * FROM users WHERE email = '$email' AND password = '$password'";
 			$result = $this->db->select($query);
 
 			if($result != false) {
 				$value = $result->fetch_assoc();
 
-				Session::set("adminLogin", true);
-				Session::set("adminId", $value['adminId']);
-				Session::set("adminUser", $value['adminUser']);
-				Session::set("adminusername", $value['adminusername']);
-
-				header("Location:dashbord.php");
+				Session::set("UsersController", true);
+				Session::set("id", $value['id']);
+				Session::set("username", $value['username']);
+                Session::set("email", $value['email']);
+                
+				header("Location:index.php");
 			} else {
-				$loginMsg = " name or Password is not Match !!!";
-				return $loginMsg;
+                array_push($this->errors, "email or Password is not Match !!!");
+				return $this->errors;
 			}
 		}
 	}

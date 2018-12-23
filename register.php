@@ -8,6 +8,7 @@
     if($_SERVER['REQUEST_METHOD'] == 'POST') {
 
       $errors = $user->userRegister($_REQUEST);
+
     }
 ?>
 <!doctype html>
@@ -44,6 +45,7 @@
 
             <?php include('templates/partials/errors.php'); ?>
 
+
               <div class="form-label-group">
                 <input type="text" id="inputUserame" class="form-control" name="username" placeholder="Username" required autofocus>
                 <label for="inputUserame">Username</label>
@@ -67,7 +69,7 @@
               </div>
 
               <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Register</button>
-              <span class="text-center mt-2 small">already you have a account : <a  href="register.php">SignIn</a></span>
+              <span class="text-center mt-2 small">already you have a account : <a  href="login.php">SignIn</a></span>
               <hr class="my-4">
               <button class="btn btn-lg btn-google btn-block text-uppercase" type="submit"><i class="fab fa-google mr-2"></i> Sign up with Google</button>
               <button class="btn btn-lg btn-facebook btn-block text-uppercase" type="submit"><i class="fab fa-facebook-f mr-2"></i> Sign up with Facebook</button>
