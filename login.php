@@ -39,7 +39,9 @@
             <h4 class="card-title text-center">stackoverflow</h4>
             <h5 class="card-title text-center">Sign In</h5>
             <form class="form-signin" action="" method="POST">
+
             <?php include('templates/partials/errors.php'); ?>
+            
               <div class="form-label-group">
                 <input type="email" id="inputEmail" class="form-control" name="email" placeholder="Email address" required autofocus>
                 <label for="inputEmail">Email address</label>

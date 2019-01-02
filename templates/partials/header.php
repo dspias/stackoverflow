@@ -1,3 +1,15 @@
+<?php
+    $filepath = realpath(dirname(__FILE__));
+    include ($filepath.'/../../config/Session.php');
+    Session::checkSession();
+?>
+
+<?php
+  header("Cache-Control: no-cache, must-revalidate");
+  header("Pragma: no-cache"); 
+  header("Expires: Sat, 26 Jul 1997 05:00:00 GMT"); 
+  header("Cache-Control: max-age=2592000");
+?>
 <!doctype html>
 <html lang="en">
 
@@ -22,7 +34,6 @@
 
 <section id="app">
 
-
     <section class="header">
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <a class="navbar-brand" href="#">Navbar</a>
@@ -36,31 +47,38 @@
                         <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
                     </li>
                 <?php
-                    session_start();
-                    if (!(isset($_SESSION['login']) && $_SESSION['login'] != '')) {
+                // !(isset($_SESSION['login']) && $_SESSION['login'] != '')
+                    if (Session::get('LoggedIn')) {
                 ?>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <?php echo Session::get('username') ?>
+                </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="#"><?php echo Session::get('username') ?> profile</a>
+                            <a class="dropdown-item" href="#">your post</a>
+                            <div class="dropdown-divider"></div>
+                            <?php
+                if(isset($_GET['action']) && $_GET['action'] == "logout"){
+                        Session::Destroy();
+                    }
+                ?>
+                            <a class="dropdown-item" href="?action=logout">logout</a>
+                        </div>
+                    </li>
+
+                    
+                <?php } else{    ?>                    
+                    
                     <li class="nav-item">
                         <a class="nav-link" href="login.php">login</a>
                     </li>
                     
-                <?php } else{    ?>                    
-
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                username
-                </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="#">profile</a>
-                            <a class="dropdown-item" href="#">nothing</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#">Something else here</a>
-                        </div>
-                    </li>
                 <?php } ?>
 
                 </ul>
-                <form class="form-inline my-2 my-lg-0">
-                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                <form class="form-inline my-2 my-lg-0" method="POST" action="">
+                    <input class="form-control mr-sm-2" name="search" type="search" placeholder="Search" aria-label="Search">
                     <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
                 </form>
             </div>

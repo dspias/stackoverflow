@@ -53,10 +53,11 @@ class UsersController {
 
         // first check the database to make sure 
         // a user does not already exist with the same username and/or email
-        $user_check_query = "SELECT * FROM users WHERE username='$username' OR email='$email' LIMIT 1";
+        $user_check_query = "SELECT username, email FROM users WHERE username='$username' OR email='$email' LIMIT 1";
         $result = $this->db->select($user_check_query);
 
-        $user = $result->fetch_assoc();
+        $user = null;
+        if($result) $user = $result->fetch_assoc();
 
         
         if ($user) { // if user exists
@@ -77,11 +78,16 @@ class UsersController {
             $query = "INSERT INTO users (username, email, password) 
                     VALUES('$username', '$email', '$password')";
             $result = $this->db->insert($query);
-            if(!isset($result)){
-                $_SESSION['username'] = $username;
-                $_SESSION['success'] = "You are now logged in";
-                
+
+            if(isset($result)){
+
+                Session::set("LoggedIn", true);
+				Session::set("username", $username);
+                Session::set("email", $email);
+
                 header('location: index.php');
+
+                // $this->userLogin(['email' => $email, 'password' => $password]);
             }
             
         } else{
@@ -113,13 +119,14 @@ class UsersController {
 			return $this->errors;
 			
 		} else {
+            $password = md5($password);
 			$query = "SELECT * FROM users WHERE email = '$email' AND password = '$password'";
-			$result = $this->db->select($query);
+            $result = $this->db->select($query);
 
-			if($result != false) {
+			if(isset($result)) {
 				$value = $result->fetch_assoc();
 
-				Session::set("UsersController", true);
+				Session::set("LoggedIn", true);
 				Session::set("id", $value['id']);
 				Session::set("username", $value['username']);
                 Session::set("email", $value['email']);
