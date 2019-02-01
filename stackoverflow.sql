@@ -48,6 +48,22 @@ CREATE TABLE `posts` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 
+DROP TABLE IF EXISTS `replies`;
+CREATE TABLE `replies` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `comment_id` int(10) unsigned NOT NULL,
+  `user_id` int(10) unsigned NOT NULL,
+  `reply` varchar(191) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `comment_id` (`comment_id`),
+  KEY `user_id` (`user_id`),
+  CONSTRAINT `replies_ibfk_2` FOREIGN KEY (`comment_id`) REFERENCES `comments` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `replies_ibfk_3` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
 DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -55,13 +71,16 @@ CREATE TABLE `users` (
   `email` varchar(60) NOT NULL,
   `password` varchar(60) NOT NULL,
   `bio` text,
+  `role` int(1) NOT NULL DEFAULT '0',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-INSERT INTO `users` (`id`, `username`, `email`, `password`, `bio`, `created_at`, `updated_at`) VALUES
-(24,	'hala',	'hala@mail.com',	'e10adc3949ba59abbe56e057f20f883e',	NULL,	NULL,	NULL),
-(25,	'pias',	'pias@gmail.com',	'e10adc3949ba59abbe56e057f20f883e',	NULL,	NULL,	NULL);
+INSERT INTO `users` (`id`, `username`, `email`, `password`, `bio`, `role`, `created_at`, `updated_at`) VALUES
+(24,	'hala',	'hala@mail.com',	'e10adc3949ba59abbe56e057f20f883e',	NULL,	0,	NULL,	NULL),
+(25,	'pias',	'pias@gmail.com',	'e10adc3949ba59abbe56e057f20f883e',	NULL,	0,	NULL,	NULL),
+(26,	'nikhil',	'nikhil@mail.com',	'e10adc3949ba59abbe56e057f20f883e',	NULL,	0,	NULL,	NULL),
+(27,	'sperrow',	'sperrow@gmail.com',	'e10adc3949ba59abbe56e057f20f883e',	NULL,	1,	NULL,	NULL);
 
--- 2019-01-02 19:54:24
+-- 2019-02-01 20:25:16

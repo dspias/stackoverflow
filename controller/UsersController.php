@@ -130,6 +130,7 @@ class UsersController {
 				Session::set("id", $value['id']);
 				Session::set("username", $value['username']);
                 Session::set("email", $value['email']);
+                Session::set("role", $value['role']);
                 
 				header("Location:index.php");
 			} else {
