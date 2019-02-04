@@ -41,9 +41,13 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
 
+            <?php
+                $currentPage = substr( $_SERVER['REQUEST_URI'], 15, strlen($_SERVER['REQUEST_URI'])  );
+            ?>
+
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
-                    <li class="nav-item active">
+                    <li class="nav-item <?php if($currentPage == "index.php"){?>active <?php } ?>">
                         <a class="nav-link" href="index.php">Home <span class="sr-only">(current)</span></a>
                     </li>
                 <?php
@@ -67,7 +71,8 @@
                     </li>
 
                     <?php if( Session::get('role') == 1 ) { ?>
-                    <li>
+                    <li class="nav-item <?php if($currentPage == "category.php"){?>active <?php } ?>">
+                        
                         <a class="nav-link" href="category.php">Category </a>
                     </li>
                     <?php } ?>
