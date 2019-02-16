@@ -37,7 +37,7 @@ class PostController{
         $body = mysqli_real_escape_string($this->db->link, $body);
 
         $query = "INSERT INTO posts (user_id, cat_id, title, body, created_at, updated_at)
-        VALUES ('$user_id', '$cat_id', '$title', '$body', NULL, NULL)";
+        VALUES ('$user_id', '$cat_id', '$title', '$body', now(), now())";
 
         $result = $this->db->insert($query);
 
@@ -49,7 +49,7 @@ class PostController{
         $user_id = $this->fm->validation(Session::get('id'));
         $user_id = mysqli_real_escape_string($this->db->link, $user_id);
         
-        $query = "SELECT p.id, p.title, p.body, u.username, u.email, c.category_name FROM posts AS p INNER JOIN users AS u ON u.id = p.user_id INNER JOIN categories AS c ON c.id = p.cat_id WHERE p.user_id = '$user_id'";
+        $query = "SELECT p.id, p.title, p.body,p.updated_at, u.username, u.email, c.category_name FROM posts AS p INNER JOIN users AS u ON u.id = p.user_id INNER JOIN categories AS c ON c.id = p.cat_id WHERE p.user_id = '$user_id'";
 
         $result = $this->db->select($query);
 

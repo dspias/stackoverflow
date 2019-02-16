@@ -94,19 +94,20 @@
                                     
                                         <!-- <a href="#" class="card-link"><i class="far fa-heart"></i> Like <sup>(112)</sup></a> -->
                                         <!-- <a href="#" class="card-link"><i class="fas fa-heart" style="color:red;"></i> Unlike <sup>(55)</sup></a> -->
-                                        
+                                      
 
                                         <a href="#" class="card-link comment" id="comment<?php echo $post['id']; ?>"><i class="far fa-comments"></i> Comment <sup>(55)</sup></a>
                                     </div>
                                     <div class="float-right">
 
                                     <?php
-                                        // $date = date_create($post->updated_at);
-                                        $myDateTime = new DateTime('2019-01-19 07:30:04');
-                                        $myDateTime->setTimezone(new DateTimeZone('GMT+06:00'));
+                                    
+                                        
+                                        $myDateTime = new DateTime($post['updated_at']);
+                                        // $myDateTime->setTimezone(new DateTimeZone('GMT+06:00'));
                                         
                                     ?>
-                                        <strong class="post-time-date"><?php $myDateTime->format('d-m-Y | h:i A') ?> </strong>
+                                        <strong class="post-time-date"><?php echo $myDateTime->format('d-m-Y | h:i A'); ?> </strong>
                                     </div>
                                 </div>
                                 <div class="card-body post-comment" id="post-comment<?php echo $post['id']; ?>">
@@ -124,7 +125,9 @@
                                     </div>
                                     
                                     <?php
-                                        if(isset($comments)){
+                                        $comment = new CommentController();
+                                        $comments = $comment->getAllComment($post['id']);
+                                        if($comments){
                                             while($comment = $comments->fetch_assoc()){
                                     ?>
                                     <div class="user-comments">
@@ -136,20 +139,47 @@
                                                     <img class="rounded-circle" style="width: 45px; height: 45px;" src="http://www.juliehamilton.ca/resources/finance-icon-2.png" alt="">
                                                 </div>
                                                 <div class="ml-2">
-                                                    <div class="h5 m-0">user name</div>
+                                                    <div class="h5 m-0"> <?php echo $comment['username']?> </div>
                                                 <?php
                                                     // $date = date_create($post->updated_at);
-                                                    $commentDate = new DateTime('2019-01-19 07:30:04');
-                                                    $commentDate->setTimezone(new DateTimeZone('GMT+06:00'));
+                                                    $commentDate = new DateTime($comment['updated_at']);
+                                                    // $commentDate->setTimezone(new DateTimeZone('GMT+06:00'));
                                                     
                                                 ?>
-                                                    <div class="text-muted"><?php $commentDate->format('d-m-Y | h:i A') ?></div>
+                                                    <div class="text-muted"><?php echo $commentDate->format('d-m-Y | h:i A'); ?></div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="comnt">conljal</div>
+                                        <div class="comnt"> <?php echo $comment['comment']?> </div>
+
+                                        <div class="replies">
+                                            <div class="all-reply">
+                                                <div class="row">
+                                                    <div class="col-md-11 offset-md-1">
+                                                        <hr>
+                                                        <p>this is the reply</p>
+                                                        <hr>
+                                                        <p>this is the reply</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="new-comment">
+                                                <form action="#" method="POST">
+                                                    <div class="row">
+                                                        <div class="col-md-9 offset-md-1">
+                                                            <textarea class="form-control comment-area" id="postComment" rows="1" placeholder="reply a comment" name="replyComment"></textarea>
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <button type="sumbit" class="btn btn-primary btn-lg btn-block btn-comment">reply</button>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                            
+                                        </div>
                                     </div>
-                                    <?php } }?>
+                                    <?php  } } ?>
 
                                 </div>
                             </div>
