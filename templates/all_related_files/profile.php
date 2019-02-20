@@ -5,7 +5,7 @@
     $categories = $categories->getAllCategory();
     $posts = $post->userallPost();
 
-    if($_SERVER['REQUEST_METHOD'] == 'POST') {
+    if($_SERVER['REQUEST_METHOD'] == 'POST' && $_REQUEST['title']) {
 
         $errors = $post->store($_REQUEST);
     }
@@ -112,13 +112,15 @@
                                 </div>
                                 <div class="card-body post-comment" id="post-comment<?php echo $post['id']; ?>">
                                     <div class="new-comment">
-                                        <form action="#" method="POST">
+                                        <form method="POST" id="comment-post<?php echo $post['id']; ?>">
                                             <div class="row">
                                                 <div class="col-md-9">
                                                     <textarea class="form-control comment-area" id="postComment" rows="1" placeholder="Post a comment" name="postComment"></textarea>
+                                                    <input type="number" class="form-control" name="post_id" value="<?php echo $post['id']; ?>" style="display:none;">
+                                                    <input type="number" class="form-control" name="user_id" value="<?php echo Session::get('id'); ?>" style="display:none;">
                                                 </div>
                                                 <div class="col-md-3">
-                                                    <button type="sumbit" class="btn btn-primary btn-lg btn-block btn-comment">Comment</button>
+                                                    <button id="comment-submit" class="btn btn-primary btn-lg btn-block btn-comment">Comment</button>
                                                 </div>
                                             </div>
                                         </form>
@@ -157,21 +159,30 @@
                                                 <div class="row">
                                                     <div class="col-md-11 offset-md-1">
                                                         <hr>
-                                                        <p>this is the reply</p>
+                                                        <div class="row">
+                                                            <div class="col-md-2">
+                                                                <div class="mr-2">
+                                                                    <img class="rounded-circle" style="width: 45px; height: 45px;" src="http://www.juliehamilton.ca/resources/finance-icon-2.png" alt="">
+                                                                </div>
+
+                                                            </div>
+                                                            <div class="col-md-10">
+                                                                this is the reply
+                                                            </div>
+                                                        </div>
                                                         <hr>
-                                                        <p>this is the reply</p>
                                                     </div>
                                                 </div>
                                             </div>
 
                                             <div class="new-comment">
-                                                <form action="#" method="POST">
+                                                <form action="#" method="POST" id="reply-post">
                                                     <div class="row">
                                                         <div class="col-md-9 offset-md-1">
                                                             <textarea class="form-control comment-area" id="postComment" rows="1" placeholder="reply a comment" name="replyComment"></textarea>
                                                         </div>
                                                         <div class="col-md-2">
-                                                            <button type="sumbit" class="btn btn-primary btn-lg btn-block btn-comment">reply</button>
+                                                            <button type="sumbit" id="reply-submit" class="btn btn-primary btn-lg btn-block btn-comment">reply</button>
                                                         </div>
                                                     </div>
                                                 </form>

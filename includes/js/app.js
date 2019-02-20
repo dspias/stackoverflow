@@ -7,3 +7,22 @@ $(document).ready(function() {
         return false;
     });
 });
+
+// =================================================== commnet post submit ============================================
+$(document).ready(function() {
+    $("button#comment-submit").click(function(event) {
+
+        var parent = '#'+$(this).parent().parent().parent().attr('id');
+
+        event.preventDefault(); 
+        var form = $(parent);
+        var formData = $(form).serialize();
+
+        $.ajax({
+            method: 'POST',
+            url: 'comment.php',
+            data: formData,
+            datatype: "JSON"
+        });
+    });
+});

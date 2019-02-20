@@ -26,23 +26,18 @@ class CommentController{
 
     public function store($request) {
 
-        $title = $this->fm->validation($request['title']);
-        $user_id = $this->fm->validation(Session::get('id'));
-        $cat_id = $this->fm->validation($request['cat_id']);
-        $body = $this->fm->validation($request['body']);
+        $user_id = $this->fm->validation($request['user_id']);
+        $post_id = $this->fm->validation($request['post_id']);
+        $comment = $this->fm->validation($request['postComment']);
 
-		$title = mysqli_real_escape_string($this->db->link, $title);
 		$user_id = mysqli_real_escape_string($this->db->link, $user_id);
-		$cat_id = mysqli_real_escape_string($this->db->link, $cat_id);
-        $body = mysqli_real_escape_string($this->db->link, $body);
+		$post_id = mysqli_real_escape_string($this->db->link, $post_id);
+        $comment = mysqli_real_escape_string($this->db->link, $comment);
 
-        $query = "INSERT INTO posts (user_id, cat_id, title, body, created_at, updated_at)
-        VALUES ('$user_id', '$cat_id', '$title', '$body', now(), now())";
+        $query = "INSERT INTO comments (user_id, post_id, comment, created_at, updated_at)
+        VALUES ('$user_id', '$post_id', '$comment', now(), now())";
 
         $result = $this->db->insert($query);
-
-        if(isset($result)) header('location:profile.php');
-		return "did not set data";
     }
     
     public function getAllComment($id){
