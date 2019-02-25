@@ -17,10 +17,31 @@ $(document).ready(function() {
         event.preventDefault(); 
         var form = $(parent);
         var formData = $(form).serialize();
+        console.log(formData);
 
         $.ajax({
             method: 'POST',
             url: 'comment.php',
+            data: formData,
+            datatype: "JSON"
+        });
+    });
+});
+
+// =================================================== reply comment submit =================================
+
+$(document).ready(function() {
+    $("button#reply-submit").click(function(event) {
+
+        var parent = '#'+$(this).parent().parent().parent().attr('id');
+
+        event.preventDefault(); 
+        var form = $(parent);
+        var formData = $(form).serialize();
+
+        $.ajax({
+            method: 'POST',
+            url: 'reply.php',
             data: formData,
             datatype: "JSON"
         });

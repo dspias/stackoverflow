@@ -159,30 +159,42 @@
                                                 <div class="row">
                                                     <div class="col-md-11 offset-md-1">
                                                         <hr>
+                                                        <?php
+                                                            $reply = new ReplyController();
+                                                            $replies = $reply->getAllReply($post['id'], $comment['id']);
+
+                                                            if($replies){
+                                                                while($reply = $replies->fetch_assoc()){
+                                                        ?>
                                                         <div class="row">
-                                                            <div class="col-md-2">
+                                                            <div class="col-md-3">
                                                                 <div class="mr-2">
                                                                     <img class="rounded-circle" style="width: 45px; height: 45px;" src="http://www.juliehamilton.ca/resources/finance-icon-2.png" alt="">
+                                                                    <span> <?php echo $reply['username']; ?> </span>
                                                                 </div>
 
                                                             </div>
-                                                            <div class="col-md-10">
-                                                                this is the reply
+                                                            <div class="col-md-9">
+                                                                <?php echo $reply['reply']; ?>
                                                             </div>
                                                         </div>
                                                         <hr>
+                                                        <?php } } ?>
                                                     </div>
                                                 </div>
                                             </div>
 
                                             <div class="new-comment">
-                                                <form action="#" method="POST" id="reply-post">
+                                                <form method="POST" id="reply-post<?php echo $comment['id']; ?>">
                                                     <div class="row">
                                                         <div class="col-md-9 offset-md-1">
-                                                            <textarea class="form-control comment-area" id="postComment" rows="1" placeholder="reply a comment" name="replyComment"></textarea>
+                                                            <textarea class="form-control comment-area" id="commentReply" rows="1" placeholder="reply a comment" name="replyComment"></textarea>
+                                                            <input type="number" class="form-control" name="post_id" value="<?php echo $post['id']; ?>" style="display:none;" >
+                                                            <input type="number" class="form-control" name="comment_id" value="<?php echo $comment['id']; ?>" style="display:none;" >
+                                                            <input type="number" class="form-control" name="user_id" value="<?php echo Session::get('id'); ?>" style="display:none;" >
                                                         </div>
                                                         <div class="col-md-2">
-                                                            <button type="sumbit" id="reply-submit" class="btn btn-primary btn-lg btn-block btn-comment">reply</button>
+                                                            <button  id="reply-submit" class="btn btn-primary btn-lg btn-block btn-comment reply-submit">reply</button>
                                                         </div>
                                                     </div>
                                                 </form>

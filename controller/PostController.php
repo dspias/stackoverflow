@@ -58,5 +58,16 @@ class PostController{
         return "post not found";
     }
 
+    public function allpost(){
+        
+        $query = "SELECT p.id, p.title, p.body,p.updated_at, u.username, u.email, c.category_name FROM posts AS p INNER JOIN users AS u ON u.id = p.user_id INNER JOIN categories AS c ON c.id = p.cat_id ORDER BY p.id DESC";
+
+        $result = $this->db->select($query);
+
+        if(isset($result)) return $result;
+
+        return "post not found";
+    }
+
 }
 ?>
