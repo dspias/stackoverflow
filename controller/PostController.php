@@ -60,13 +60,51 @@ class PostController{
 
     public function allpost(){
         
-        $query = "SELECT p.id, p.title, p.body,p.updated_at, u.username, u.email, c.category_name FROM posts AS p INNER JOIN users AS u ON u.id = p.user_id INNER JOIN categories AS c ON c.id = p.cat_id ORDER BY p.id DESC";
+        $query = "SELECT p.id, p.title, p.body,p.updated_at, u.username, u.email, c.category_name FROM posts AS p INNER JOIN users AS u ON u.id = p.user_id INNER JOIN categories AS c ON c.id = p.cat_id WHERE p.approved = 1 ORDER BY p.id DESC";
 
         $result = $this->db->select($query);
 
         if(isset($result)) return $result;
 
         return "post not found";
+    }
+    public function unApprovedPost(){
+        
+        $query = "SELECT p.id, p.title, p.body,p.updated_at, u.username, u.email, c.category_name FROM posts AS p INNER JOIN users AS u ON u.id = p.user_id INNER JOIN categories AS c ON c.id = p.cat_id WHERE p.approved = 0 ORDER BY p.id DESC";
+
+        $result = $this->db->select($query);
+
+        if(isset($result)) return $result;
+
+        return "post not found";
+    }
+
+    public function approvedPost($id){
+
+        // $id = $this->fm->validation($id['approveId']);
+        $id = mysqli_real_escape_string($this->db->link, $id);
+
+        $query = "UPDATE posts SET approved = 1 WHERE id = '$id' ";
+
+        $result = $this->db->update($query);
+
+        header('location:approval.php');
+
+
+    }
+
+
+    public function adminDeletePost($id){
+
+        // $id = $this->fm->validation($id['deletedId']);
+        $id = mysqli_real_escape_string($this->db->link, $id);
+
+        $query = "DELETE FROM posts WHERE id = '$id' ";
+
+        $result = $this->db->delete($query);
+
+        header('location:approval.php');
+
     }
 
 }

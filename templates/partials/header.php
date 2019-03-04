@@ -77,6 +77,13 @@
                     </li>
                     <?php } ?>
 
+                    <?php if( Session::get('role') == 1 ) { ?>
+                    <li class="nav-item <?php if($currentPage == "approval.php"){?>active <?php } ?>">
+                        
+                        <a class="nav-link" href="approval.php">approval </a>
+                    </li>
+                    <?php } ?>
+
                     
                 <?php } else{    ?>                    
                     

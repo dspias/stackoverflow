@@ -39,6 +39,12 @@ class ReplyController{
 
         $result = $this->db->insert($query);
 
+        $query = "SELECT r.id, u.username, u.email, r.reply, r.updated_at FROM replies AS r INNER JOIN users AS u ON u.id = r.user_id WHERE r.post_id = '$post_id' AND r.comment_id = '$comment_id'";
+
+        $data = $this->db->select($query);
+
+        return $data;
+
     }
     
     public function getAllReply($post_id, $comment_id){

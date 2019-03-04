@@ -43,7 +43,21 @@ $(document).ready(function() {
             method: 'POST',
             url: 'reply.php',
             data: formData,
-            datatype: "JSON"
+            datatype: "JSON",
+            success: function() {
+                console.log("hello");
+            }
         });
     });
 });
+
+
+/* <div class="row">
+    <div class="col-md-3">
+        <div class="mr-2">
+            <img class="rounded-circle" style="width: 45px; height: 45px;" src="http://www.juliehamilton.ca/resources/finance-icon-2.png" alt="">
+            <span> sperrow </span>
+        </div>
+    </div>
+    <div class="col-md-9"> gsdgs </div>
+</div> */
