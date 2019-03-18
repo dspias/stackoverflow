@@ -32,6 +32,7 @@ class ReplyController{
 
 		$user_id = mysqli_real_escape_string($this->db->link, $user_id);
 		$post_id = mysqli_real_escape_string($this->db->link, $post_id);
+		$comment_id = mysqli_real_escape_string($this->db->link, $comment_id);
         $reply = mysqli_real_escape_string($this->db->link, $reply);
 
         $query = "INSERT INTO replies (post_id,comment_id, user_id, reply, created_at, updated_at)
@@ -39,11 +40,22 @@ class ReplyController{
 
         $result = $this->db->insert($query);
 
-        $query = "SELECT r.id, u.username, u.email, r.reply, r.updated_at FROM replies AS r INNER JOIN users AS u ON u.id = r.user_id WHERE r.post_id = '$post_id' AND r.comment_id = '$comment_id'";
+        $query = "SELECT r.id, u.username, u.email, r.reply, r.comment_id, r.updated_at FROM replies AS r INNER JOIN users AS u ON u.id = r.user_id WHERE r.post_id = '$post_id' AND r.comment_id = '$comment_id' ORDER BY r.id DESC LIMIT 1";
 
         $data = $this->db->select($query);
 
-        return $data;
+        // $data = array($data);
+
+        if($data){
+            $i=0;
+            $array = [];
+            while($dat = $data->fetch_assoc()){
+                $array[$i] = $dat;
+                $i++;
+            }
+        }
+
+        return $array;
 
     }
     

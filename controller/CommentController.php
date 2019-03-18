@@ -38,6 +38,23 @@ class CommentController{
         VALUES ('$user_id', '$post_id', '$comment', now(), now())";
 
         $result = $this->db->insert($query);
+
+        $query = "SELECT c.id, u.username, u.email, c.comment, c.post_id,c.user_id, c.updated_at FROM comments AS c INNER JOIN users AS u ON u.id = c.user_id WHERE c.post_id = '$post_id' ORDER BY c.id DESC LIMIT 1";
+
+        $data = $this->db->select($query);
+
+        // $data = array($data);
+
+        if($data){
+            $i=0;
+            $array = [];
+            while($dat = $data->fetch_assoc()){
+                $array[$i] = $dat;
+                $i++;
+            }
+        }
+
+        return $array;
     }
     
     public function getAllComment($id){

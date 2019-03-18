@@ -115,7 +115,7 @@
                                         <form method="POST" id="comment-post<?php echo $post['id']; ?>">
                                             <div class="row">
                                                 <div class="col-md-9">
-                                                    <textarea class="form-control comment-area" id="postComment" rows="1" placeholder="Post a comment" name="postComment"></textarea>
+                                                    <textarea class="form-control comment-area" id="postComment<?php echo $post['id']; ?>" rows="1" placeholder="Post a comment" name="postComment"></textarea>
                                                     <input type="number" class="form-control" name="post_id" value="<?php echo $post['id']; ?>" style="display:none;">
                                                     <input type="number" class="form-control" name="user_id" value="<?php echo Session::get('id'); ?>" style="display:none;">
                                                 </div>
@@ -157,7 +157,7 @@
                                         <div class="replies">
                                             <div class="all-reply">
                                                 <div class="row">
-                                                    <div class="col-md-11 offset-md-1">
+                                                    <div class="col-md-11 offset-md-1" id="allreply<?php echo $comment['id']; ?>">
                                                         <hr>
                                                         <?php
                                                             $reply = new ReplyController();
@@ -188,7 +188,7 @@
                                                 <form method="POST" id="reply-post<?php echo $comment['id']; ?>">
                                                     <div class="row">
                                                         <div class="col-md-9 offset-md-1">
-                                                            <textarea class="form-control comment-area" id="commentReply" rows="1" placeholder="reply a comment" name="replyComment"></textarea>
+                                                            <textarea class="form-control comment-area" id="commentReply<?php echo $comment['id']; ?>" rows="1" placeholder="reply a comment" name="replyComment"></textarea>
                                                             <input type="number" class="form-control" name="post_id" value="<?php echo $post['id']; ?>" style="display:none;" >
                                                             <input type="number" class="form-control" name="comment_id" value="<?php echo $comment['id']; ?>" style="display:none;" >
                                                             <input type="number" class="form-control" name="user_id" value="<?php echo Session::get('id'); ?>" style="display:none;" >
